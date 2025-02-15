@@ -1,0 +1,83 @@
+# version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: laravel_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: news_agg
+      MYSQL_USER: news_agg
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravel_network
+
+  # PHP-FPM for Laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    networks:
+      - laravel_network
+    depends_on:
+      - mysql
+      - elasticsearch
+      - redis
+
+  # NGINX Web Server
+  webserver:
+    image: nginx:alpine
+    container_name: laravel_webserver
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - laravel_network
+    depends_on:
+      - app
+
+  # ElasticSearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: laravel_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - laravel_network
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:alpine
+    container_name: laravel_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - laravel_network
+
+volumes:
+  mysql_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+networks:
+  laravel_network:
+    driver: bridge
