@@ -9,15 +9,13 @@
 
 ## About Laravel
 
-News aggregator API written with Laravel:
+News aggregator API written with Laravel 11:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Fetches articles from NewsAPI, The Guardian and The New York Times.
+- Full text search using elastic search
+- Laravel Sanctum API authentication
+- Redis cache
+- [API Documentation](https://documenter.getpostman.com/view/396935/2sAYXEFdvb)
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
