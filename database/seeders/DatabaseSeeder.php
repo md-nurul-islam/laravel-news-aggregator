@@ -28,17 +28,19 @@ class DatabaseSeeder extends Seeder
 
         UserPreference::factory()->create(
             [
-                [
-                    'user_id' => 1,
-                    'source' => 'The Guardian',
-                    'category' => 'article',
-                ],
-                [
-                    'user_id' => 1,
-                    'source' => 'The New York Times',
-                    'category' => 'News',
-                ],
-            ]
+                'user_id' => 1,
+                'source' => 'The Guardian',
+                'category' => 'article',
+            ],
+
+        );
+
+        UserPreference::factory()->create(
+            [
+                'user_id' => 1,
+                'source' => 'The New York Times',
+                'category' => 'News',
+            ],
         );
     }
 }
