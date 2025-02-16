@@ -7,16 +7,23 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Installation Instruction
+
+  - Clone the repository
+  - Run `docker-compose up -d` and wait for all the processes to be completed
+  - The seeder will create a user with email: `test@example.com` and password: `secret`
+  - Login to container `docker-compose exec app /bin/sh` then run the schduler `php artisan schedule:work` to fetch new articles from the above mentioned providers. 
+  - [API Documentation](https://documenter.getpostman.com/view/396935/2sAYXEFdvb)
+
+
+## Features
 
 News aggregator API written with Laravel 11:
 
 - Fetches articles from NewsAPI, The Guardian and The New York Times.
-- Full text search using elastic search
+- Full text search using elasticsearch
 - Laravel Sanctum API authentication
 - Redis cache
-- Login to app `docker-compose exec app /bin/sh` then run the schduler `php artisan schedule:work` to fetch new articles from the above mentioned providers.
-- [API Documentation](https://documenter.getpostman.com/view/396935/2sAYXEFdvb)
 
 ## License
 
