@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\GuardianApiService;
 use App\Services\NewsAggregatorService;
 use App\Services\NewsApiService;
 use App\Services\NewYortTimesApiService;
@@ -31,7 +32,7 @@ Schedule::name('fetch:newsApi')->call(function (): void {
 
 Schedule::name('fetch:nyt')->call(function (): void {
     $newsService = new NewsAggregatorService(
-        newsService: new NewYortTimesApiService()
+        newsService: new GuardianApiService()
     );
     $newsService->fetchAndStoreNews();
 })
