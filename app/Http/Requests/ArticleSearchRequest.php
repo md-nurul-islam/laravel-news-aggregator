@@ -26,6 +26,7 @@ class ArticleSearchRequest extends FormRequest
             'category' => 'nullable|string',
             'date' => 'nullable|date',
             'q' => 'nullable|string',
+            'page'=> 'nullable|int',
         ];
     }
 }

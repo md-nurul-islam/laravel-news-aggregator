@@ -15,12 +15,17 @@ class UserPreferenceService
             return json_decode(json: Redis::get($cacheKey), associative: true);
         }
 
-        $preferences = UserPreference::where(column: 'user_id', operator: $userId)->first();
+        $preferences = UserPreference::where(column: 'user_id', operator: $userId)->get();
 
-        Redis::set($cacheKey, json_encode(value: $preferences));
+        $userPreferences = [
+            'sources' => $preferences->pluck('source')->all(),
+            'categories' => $preferences->pluck('category')->all(),
+        ];
+
+        Redis::set($cacheKey, json_encode(value: $userPreferences));
         Redis::expire($cacheKey, 3600); // Cache for 1 hour
 
-        return $preferences;
+        return $userPreferences;
     }
 
     public function updatePreferences($userId, $data): UserPreference

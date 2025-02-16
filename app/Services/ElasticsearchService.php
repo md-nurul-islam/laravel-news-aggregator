@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use App\Models\Article;
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\ClientBuilder;
-use Elastic\Elasticsearch\Response\Elasticsearch;
-use Http\Promise\Promise;
+use Elasticsearch\Client;
+use Elasticsearch\ClientBuilder;
 
 class ElasticsearchService
 {
@@ -46,11 +44,13 @@ class ElasticsearchService
         $this->client->delete($params);
     }
 
-    public function searchArticles(string $query): Elasticsearch|Promise
+    public function searchArticles(string $query, int $from = 0, int $perPage = 20): array
     {
         $params = [
             'index' => 'articles',
             'body' => [
+                'from' => $from,
+                'size' => $perPage,
                 'query' => [
                     'multi_match' => [
                         'query' => $query,

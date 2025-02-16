@@ -2,46 +2,19 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
-use App\Models\Article;
+use App\Services\Contracts\NewsApiServiceInterface;
 
 class NewsAggregatorService
 {
-    protected $client;
+    private NewsApiServiceInterface $newsService;
 
-    public function __construct()
+    public function __construct(NewsApiServiceInterface $newsService)
     {
-        $this->client = new Client();
+        $this->newsService = $newsService;
     }
 
-    public function fetchFromNewsAPI()
+    public function fetchAndStoreNews(): void
     {
-        $response = $this->client->get('https://newsapi.org/v2/top-headlines', [
-            'query' => [
-                'apiKey' => env('NEWSAPI_KEY'),
-                'sources' => 'bbc-news,cnn',
-                'pageSize' => 100,
-            ],
-        ]);
-
-        $articles = json_decode($response->getBody(), true)['articles'];
-
-        foreach ($articles as $article) {
-            Article::updateOrCreate(
-                ['url' => $article['url']],
-                [
-                    'title' => $article['title'],
-                    'description' => $article['description'],
-                    'source' => 'NewsAPI',
-                    'category' => $article['category'] ?? null,
-                    'author' => $article['author'],
-                    'url' => $article['url'],
-                    'image_url' => $article['urlToImage'],
-                    'published_at' => $article['publishedAt'],
-                ]
-            );
-        }
+        $this->newsService->fetchNewsFromAPI();
     }
-
-    // Add similar methods for The Guardian and New York Times APIs
 }

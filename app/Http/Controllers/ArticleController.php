@@ -5,6 +5,10 @@ use Illuminate\Routing\Controller;
 use App\Http\Requests\ArticleSearchRequest;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
+use App\Services\GuardianApiService;
+use App\Services\NewsAggregatorService;
+use App\Services\NewsApiService;
+use App\Services\NewYortTimesApiService;
 use App\Services\UserPreferenceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +37,8 @@ final class ArticleController extends Controller
 
             if ($preferences) {
                 $filters = [
-                    'source' => $preferences->source,
-                    'category' => $preferences->category,
+                    'source' => $preferences['sources'],
+                    'category' => $preferences['categories'],
                 ];
             }
         }
@@ -44,5 +48,33 @@ final class ArticleController extends Controller
                 filters: $filters
             )
         );
+    }
+
+    public function details(int $id): mixed
+    {
+        $article = $this->articleRepository->find(id: $id);
+
+        if ($article) {
+            return response()->json(
+                data: $article,
+                status: 200
+            );
+        }
+
+        return response()->json(
+            data: ['message' => 'Article not found'],
+            status: 404
+        );
+    }
+
+    public function fetch(): JsonResponse|string
+    {
+        $newsService = new NewsAggregatorService(
+            newsService: new NewYortTimesApiService()
+        );
+
+        $newsService->fetchAndStoreNews();
+
+        return response()->json(data: ['message' => 'Fetching articles...']);
     }
 }

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\UserPreference;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -22,8 +22,23 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'remember_token' => Str::random(10),
         ]);
+
+        UserPreference::factory()->create(
+            [
+                [
+                    'user_id' => 1,
+                    'source' => 'The Guardian',
+                    'category' => 'article',
+                ],
+                [
+                    'user_id' => 1,
+                    'source' => 'The New York Times',
+                    'category' => 'News',
+                ],
+            ]
+        );
     }
 }
