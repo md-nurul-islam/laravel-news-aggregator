@@ -40,6 +40,6 @@ EXPOSE 9000
 # Start install dependencies PHP-FPM and NGINX
 CMD ["sh", "-c", "cp .env.example .env \
     && composer install \
-    && php-fpm & nginx -g 'daemon off;' \
     && composer run-script post-create-project-cmd \
+    && php-fpm & nginx -g 'daemon off;' \
     "]

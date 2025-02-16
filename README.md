@@ -15,10 +15,9 @@ News aggregator API written with Laravel 11:
 - Full text search using elastic search
 - Laravel Sanctum API authentication
 - Redis cache
+- Login to app `docker-compose exec app /bin/sh` then run the schduler `php artisan schedule:work` to fetch new articles from the above mentioned providers.
 - [API Documentation](https://documenter.getpostman.com/view/396935/2sAYXEFdvb)
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Laravel framework and this application are open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -49,8 +49,7 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
-            "@php artisan migrate:fresh --seed",
-            "@php artisan schedule:work"
+            "@php artisan migrate:fresh --seed"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
