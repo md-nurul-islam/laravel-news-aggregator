@@ -38,8 +38,8 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 EXPOSE 9000
 
 # Start install dependencies PHP-FPM and NGINX
-CMD ["sh", "-c", "composer install \
+CMD ["sh", "-c", "cp .env.example .env \
+    && composer install \
     && composer run-script post-create-project-cmd \
-    && cp .env.example .env \
     && php-fpm & nginx -g 'daemon off;' \
     "]
